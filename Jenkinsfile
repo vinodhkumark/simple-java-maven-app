@@ -10,6 +10,7 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
+                    echo "export JAVA_HOME = ${JAVA_HOME}/bin"
                     echo "JAVA_HOME = ${JAVA_HOME}"
                     mvn clean install
                 ''' 
