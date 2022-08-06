@@ -27,7 +27,7 @@ podTemplate(yaml: '''
             - key: .dockerconfigjson
               path: config.json
 ''') {
-  node(POD_NAME) {
+  node(POD_LABEL) {
     stage('Get a Maven project') {
       git url: 'https://github.com/vinodhkumark/simple-java-maven-app.git', branch: 'master'
       container('maven') {
