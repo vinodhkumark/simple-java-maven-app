@@ -1,20 +1,31 @@
 pipeline {
     agent { label 'kubeagent' }
-    stages {
-        stage('Example Build') {
-            agent { docker 'maven:3.8.1-adoptopenjdk-11' } 
-            steps {
-                echo 'Hello, Maven'
-                sh 'mvn --version'
-                sh 'mvn clean install'
-            }
-        }
-        stage('Example Test') {
-            agent { docker 'openjdk:8-jre' } 
-            steps {
-                echo 'Hello, JDK'
-                sh 'java -version'
-            }
-        }
-    }
+	stages {
+		stage('Checkout') {
+			steps {
+				script {
+					git url: 'https://github.com/piomin/sample-spring-boot-on-kubernetes.git', credentialsId: 'github_credentials'
+					sh 'ls -la'
+				}
+			}
+		}
+		stage('Build') {
+			agent {
+				label "maven"
+			}
+			steps {
+				sh 'ls -la'
+				sh 'mvn -version'
+				sh 'mvn clean compile'
+			}
+		}
+		stage('Test') {
+			agent {
+				label "maven"
+			}
+			steps {
+				sh 'mvn test'
+			}
+		}
+	}
 }
