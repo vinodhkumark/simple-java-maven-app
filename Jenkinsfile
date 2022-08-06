@@ -27,7 +27,7 @@ podTemplate(yaml: '''
             - key: .dockerconfigjson
               path: config.json
 ''') {
-  node(POD_LABEL) {
+  node('kubeagent') {
       agent { label 'kubeagent' }
     stage('Get a Maven project') {
       git url: 'https://github.com/vinodhkumark/simple-java-maven-app.git', branch: 'main'
