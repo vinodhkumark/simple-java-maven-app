@@ -10,12 +10,14 @@ pipeline {
     stages {
         stage ('Initialize') {
             steps {
+                withEnv(["JAVA_HOME=/opt/java/openjdk/bin/"]) {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
                     echo "JAVA_HOME = ${JAVA_HOME}"
                     mvn  -B verify
                 ''' 
+                }
             }
         }
 
