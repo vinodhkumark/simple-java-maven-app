@@ -1,27 +1,19 @@
 pipeline {
     agent { label 'kubeagent' }
     stages {
-        stage ('Compile Stage') {
-
+        stage('Example Build') {
+            agent { docker 'maven:3.8.1-adoptopenjdk-11' } 
             steps {
-                withMaven(maven : 'apache-maven-3.6.1') {
-                    bat 'mvn clean compile'
-                }
+                echo 'Hello, Maven'
+                sh 'mvn --version'
+                sh 'mvn clean install'
             }
         }
-        stage ('Testing Stage') {
-
+        stage('Example Test') {
+            agent { docker 'openjdk:8-jre' } 
             steps {
-                withMaven(maven : 'apache-maven-3.6.1') {
-                    bat 'mvn test'
-                }
-            }
-        }
-        stage ('Install Stage') {
-            steps {
-                withMaven(maven : 'apache-maven-3.6.1') {
-                    bat 'mvn install'
-                }
+                echo 'Hello, JDK'
+                sh 'java -version'
             }
         }
     }
