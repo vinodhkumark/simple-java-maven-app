@@ -55,7 +55,7 @@ pipeline {
         container('kaniko') {
           sh '''
             cat /kaniko/.docker/config.json
-            /kaniko/executor --context `pwd` --destination test-docker.jfrog.io/hello-kaniko --image-name-with-digest-file=image-file
+            /kaniko/executor --context `pwd` --destination vinodhkumark1:/javaapp:1.0
             '''
         }
       }
