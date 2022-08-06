@@ -19,6 +19,15 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
+          - name: kaniko
+            image: gcr.io/kaniko-project/executor:debug
+            command:
+            - sleep
+            args:
+            - 9999999
+            volumeMounts:
+            - name: kaniko-secret
+              mountPath: /kaniko/.docker
           volumes:
           - name: docker-sock
             hostPath:
@@ -41,33 +50,15 @@ pipeline {
         }
       }
     }
-    stage('Build-Docker-Image') {
-      steps {
-        container('docker') {
-          sh 'docker build -t ss69261/testing-image:latest .'
+    stage ('Exec Kaniko') {
+      steps { 
+        container('kaniko') {
+          sh '''
+            cat /kaniko/.docker/config.json
+            /kaniko/executor --context `pwd` --destination test-docker.jfrog.io/hello-kaniko --image-name-with-digest-file=image-file
+            '''
         }
       }
     }
-    stage('Login-Into-Docker') {
-      steps {
-        container('docker') {
-          sh 'docker login -u <docker_username> -p <docker_password>'
-      }
-    }
-    }
-     stage('Push-Images-Docker-to-DockerHub') {
-      steps {
-        container('docker') {
-          sh 'docker push ss69261/testing-image:latest'
-      }
-    }
-     }
   }
-    post {
-      always {
-        container('docker') {
-          sh 'docker logout'
-      }
-      }
-    }
 }
