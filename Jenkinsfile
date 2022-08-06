@@ -31,7 +31,13 @@ pipeline {
           volumes:
           - name: docker-sock
             hostPath:
-              path: /var/run/docker.sock    
+              path: /var/run/docker.sock
+          - name: kaniko-secret
+            secret:
+              secretName: saas-credentials
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
         '''
     }
   }
