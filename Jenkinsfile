@@ -1,53 +1,23 @@
-podTemplate(yaml: '''
-    apiVersion: v1
-    kind: Pod
-    spec:
-      containers:
-      - name: maven
-        image: maven:3.8.6-jdk-8
-        command:
-        - sleep
-        args:
-        - 99d
-      - name: kaniko
-        image: gcr.io/kaniko-project/executor:debug
-        command:
-        - sleep
-        args:
-        - 9999999
-        volumeMounts:
-        - name: kaniko-secret
-          mountPath: /kaniko/.docker
-      restartPolicy: Never
-      volumes:
-      - name: kaniko-secret
-        secret:
-            secretName: dockercred
-            items:
-            - key: .dockerconfigjson
-              path: config.json
-''') {
-  node(POD_LABEL) {
-    stage('Get a Maven project') {
-      git url: 'https://github.com/vinodhkumark/simple-java-maven-app.git', branch: 'master'
-      container('maven') {
-        stage('Build a Maven project') {
-          sh '''
-          mvn clean install
-          '''
-        }
-      }
+pipeline {
+    agent any
+    tools { 
+        maven 'maven' 
+        jdk 'jdk' 
     }
-
-    stage('Build Java Image') {
-      container('kaniko') {
-        stage('Build a Go project') {
-          sh '''
-            /kaniko/executor --context `pwd` --destination bibinwilson/hello-kaniko:1.0
-          '''
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
         }
-      }
-    }
 
-  }
+        stage ('Build') {
+            steps {
+                echo 'This is a minimal pipeline.'
+            }
+        }
+    }
 }
