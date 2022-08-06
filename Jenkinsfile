@@ -4,6 +4,9 @@ pipeline {
         maven 'maven' 
         jdk 'jdk' 
     }
+    environment {
+        JAVA_HOME = '/opt/java/openjdk/bin/'
+    }
     stages {
         stage ('Initialize') {
             steps {
