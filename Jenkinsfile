@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'kubeagent' }
     tools { 
         maven 'maven' 
         jdk 'jdk' 
