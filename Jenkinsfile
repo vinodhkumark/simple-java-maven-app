@@ -1,8 +1,8 @@
 pipeline {
     agent { label 'kubeagent' }
-    tools { 
-      maven 'MAVEN_HOME' 
-      jdk 'JAVA_HOME' 
+   tools { 
+        maven 'Maven 3.3.9' 
+        jdk 'jdk8' 
     }
 	stages {
 		stage('Checkout') {
