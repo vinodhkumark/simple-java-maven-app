@@ -27,9 +27,10 @@ podTemplate(yaml: '''
             - key: .dockerconfigjson
               path: config.json
 ''') {
-  node(kubeagent) {
+  node(POD_LABEL) {
+      agent { label 'kubeagent' }
     stage('Get a Maven project') {
-      git url: 'https://github.com/scriptcamp/kubernetes-kaniko.git', branch: 'main'
+      git url: 'https://github.com/vinodhkumark/simple-java-maven-app.git', branch: 'main'
       container('maven') {
         stage('Build a Maven project') {
           sh '''
