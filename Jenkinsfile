@@ -10,9 +10,6 @@ pipeline {
 			}
 		}
 		stage('Build') {
-			agent {
-				label "maven"
-			}
 			steps {
 				sh 'ls -la'
 				sh 'mvn -version'
@@ -20,9 +17,6 @@ pipeline {
 			}
 		}
 		stage('Test') {
-			agent {
-				label "maven"
-			}
 			steps {
 				sh 'mvn test'
 			}
