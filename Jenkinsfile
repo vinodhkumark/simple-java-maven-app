@@ -34,7 +34,7 @@ podTemplate(yaml: '''
       container('maven') {
         stage('Build a Maven project') {
           sh '''
-          echo pwd
+          mvn clean install
           '''
         }
       }
