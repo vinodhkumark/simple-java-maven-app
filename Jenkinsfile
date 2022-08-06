@@ -1,27 +1,30 @@
 pipeline {
     agent { label 'kubeagent' }
-    tools { 
-        maven 'maven' 
-        jdk 'jdk' 
-    }
-    environment {
-        JAVA_HOME = '/opt/java/openjdk/bin/'
-    }
-    stages {
-        stage ('Initialize') {
-            steps {
-                withEnv(["JAVA_HOME=/opt/java/openjdk/"]) {
-                sh '''
-                    mvn clean install package
-                ''' 
-                }
-            }
+  stages {
+    stage('Maven Install') {
+      agent {
+        docker {
+          image 'maven:3.5.0'
         }
-
-        stage ('Build') {
-            steps {
-                echo 'This is a minimal pipeline.'
-            }
-        }
+      }
+      steps {
+        sh 'mvn clean install'
+      }
     }
+    stage('Docker Build') {
+      agent any
+      steps {
+        sh 'docker build -t shanem/spring-petclinic:latest .'
+      }
+    }
+    stage('Docker Push') {
+      agent any
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push shanem/spring-petclinic:latest'
+        }
+      }
+    }
+  }
 }
