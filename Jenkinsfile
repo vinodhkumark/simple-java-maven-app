@@ -34,7 +34,7 @@ pipeline {
     stage('Clone') {
       steps {
         container('maven') {
-          git branch: 'main', changelog: false, poll: false, url: 'https://mohdsabir-cloudside@bitbucket.org/mohdsabir-cloudside/java-app.git'
+          git branch: 'main', changelog: false, poll: false, url: 'https://github.com/vinodhkumark/simple-java-maven-app.git'
         }
       }
     }  
