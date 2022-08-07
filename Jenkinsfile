@@ -34,7 +34,7 @@ pipeline {
     stage('Clone') {
       steps {
         container('maven') {
-          git branch: 'main', changelog: false, poll: false, url: 'https://github.com/vinodhkumark/simple-java-maven-app.git'
+          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/vinodhkumark/simple-java-maven-app.git'
         }
       }
     }  
