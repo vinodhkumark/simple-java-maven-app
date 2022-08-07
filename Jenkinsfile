@@ -50,7 +50,7 @@ pipeline {
         container('kaniko') {
           sh '''
             cat /kaniko/.docker/config.json
-            /kaniko/executor --context `pwd` --destination vinodhkumark1:/javaapp:1.0
+            /kaniko/executor --context `pwd` --destination vinodhkumark1/javaapp:1.0
             '''
         }
       }
