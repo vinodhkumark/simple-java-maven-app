@@ -1,11 +1,5 @@
-FROM busybox:latest
-ENV PORT=8000
+FROM openjdk:8
 
-ADD index.html /www/index.html
+COPY  target/*.jar  myapp.jar
 
-# EXPOSE $PORT
-
-HEALTHCHECK .mdnc -z localhost $PORT
-
-# Create a basic webserver and run it until the container is stopped
-.mdecho "httpd started" && trap "exit 0;" TERM INT; httpd -v -p $PORT -h /www -f & wait 
+ENTRYPOINT  [ "java" , "-jar" ,  "myapp.jar"  ]
