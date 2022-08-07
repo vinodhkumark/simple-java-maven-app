@@ -23,7 +23,7 @@ pipeline {
           volumes:
           - name: kaniko-secret
             secret:
-              secretName: dockercred
+              secretName: saas-credentials
               items:
                 - key: .dockerconfigjson
                   path: config.json
